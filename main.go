@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"math/rand"
+	"net/http"
 )
 
 var sets = map[string][]string{
@@ -30,4 +32,19 @@ func generate(length int, s []string) string {
 	}
 
 	return string(password)
+}
+
+func main() {
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("/generate", func(w http.ResponseWriter, r *http.Request) {
+		length := 12
+		sets := []string{"lowercase", "uppercase", "digits", "special"}
+		password := generate(length, sets)
+		fmt.Fprintf(w, "Generated password: %s", password)
+	})
+
+	fmt.Println("Starting server on :8080")
+
+	http.ListenAndServe(":8080", mux)
 }

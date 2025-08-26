@@ -1,16 +1,25 @@
 package handler
 
 import (
+	"context"
 	"net/http"
 )
 
 type Router struct {
-	mux *http.ServeMux
+	mux    *http.ServeMux
+	server *http.Server
 }
 
 func NewRouter() *Router {
+	mux := http.NewServeMux()
+	srv := &http.Server{
+		Addr:    ":8080",
+		Handler: mux,
+	}
+
 	return &Router{
-		mux: http.NewServeMux(),
+		mux:    mux,
+		server: srv,
 	}
 }
 
@@ -20,5 +29,9 @@ func (r *Router) SetupRoutes() {
 }
 
 func (r *Router) Start() error {
-	return http.ListenAndServe(":8080", r.mux)
+	return r.server.ListenAndServe()
+}
+
+func (r *Router) Shutdown(ctx context.Context) error {
+	return r.server.Shutdown(ctx)
 }

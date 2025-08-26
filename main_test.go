@@ -2,14 +2,18 @@ package main
 
 import "testing"
 
-func TestGenerate(t *testing.T) {
-	result := generate(6, []string{"lowercase"})
+const passwordLength = 6
 
-	if len(result) != 6 {
-		t.Errorf("Expected password length 6, got %d", len(result))
+func TestGenerateLength(t *testing.T) {
+	pw := generate(passwordLength, []string{"lowercase"})
+	if len(pw) != passwordLength {
+		t.Errorf("Expected password length %d, got %d", passwordLength, len(pw))
 	}
+}
 
-	for _, c := range result {
+func TestGenerate(t *testing.T) {
+	pw := generate(passwordLength, []string{"lowercase"})
+	for _, c := range pw {
 		if c < 'a' || c > 'z' {
 			t.Errorf("Password contains non-lowercase character: %c", c)
 		}
@@ -17,13 +21,8 @@ func TestGenerate(t *testing.T) {
 }
 
 func TestGenerateUppercase(t *testing.T) {
-	result := generate(6, []string{"uppercase"})
-
-	if len(result) != 6 {
-		t.Errorf("Expected password length 6, got %d", len(result))
-	}
-
-	for _, c := range result {
+	pw := generate(passwordLength, []string{"uppercase"})
+	for _, c := range pw {
 		if c < 'A' || c > 'Z' {
 			t.Errorf("Password contains non-uppercase character: %c", c)
 		}
@@ -31,13 +30,8 @@ func TestGenerateUppercase(t *testing.T) {
 }
 
 func TestGenerateDigits(t *testing.T) {
-	result := generate(6, []string{"digits"})
-
-	if len(result) != 6 {
-		t.Errorf("Expected password length 6, got %d", len(result))
-	}
-
-	for _, c := range result {
+	pw := generate(passwordLength, []string{"digits"})
+	for _, c := range pw {
 		if c < '0' || c > '9' {
 			t.Errorf("Password contains non-digit character: %c", c)
 		}
@@ -46,13 +40,8 @@ func TestGenerateDigits(t *testing.T) {
 
 func TestGenerateSpecial(t *testing.T) {
 	specials := "@%!?*^&"
-	result := generate(6, []string{"special"})
-
-	if len(result) != 6 {
-		t.Errorf("Expected password length 6, got %d", len(result))
-	}
-
-	for _, c := range result {
+	pw := generate(passwordLength, []string{"special"})
+	for _, c := range pw {
 		if !containsRune(specials, c) {
 			t.Errorf("Password contains non-special character: %c", c)
 		}

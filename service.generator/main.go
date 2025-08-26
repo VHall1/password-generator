@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/vhall1/passsword-generator/service.generator/handler"
+	"github.com/vhall1/password-generator/service.generator/handler"
 )
 
 func main() {

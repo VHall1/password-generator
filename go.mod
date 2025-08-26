@@ -1,3 +1,3 @@
-module github.com/vhall1/passsword-generator
+module github.com/vhall1/password-generator
 
 go 1.25.0

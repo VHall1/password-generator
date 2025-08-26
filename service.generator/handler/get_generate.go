@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/vhall1/passsword-generator/service.generator/domain"
+	"github.com/vhall1/password-generator/service.generator/domain"
 )
 
 func GetGenerate(w http.ResponseWriter, r *http.Request) {

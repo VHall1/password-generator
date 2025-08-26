@@ -1,0 +1,6 @@
+name: password-generator
+services:
+  generator:
+    build: .
+    ports:
+      - "8080:8080"

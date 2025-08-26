@@ -1,6 +1,6 @@
 name: password-generator
 services:
   generator:
-    build: .
+    build: ./service.generator
     ports:
       - "8080:8080"

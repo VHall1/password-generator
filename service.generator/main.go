@@ -39,6 +39,10 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/generate", func(w http.ResponseWriter, r *http.Request) {
+		// TODO: this shouldn't be deployed like this
+		// only allowing * domains to facilitate development
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+
 		setsParam := r.URL.Query().Get("sets")
 		sets := []string{}
 
@@ -51,7 +55,7 @@ func main() {
 
 		length := 12
 		password := generate(length, sets)
-		fmt.Fprintf(w, "Generated password: %s", password)
+		fmt.Fprint(w, password)
 	})
 
 	fmt.Println("Starting server on :8080")

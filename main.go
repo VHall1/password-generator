@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"net/http"
+	"strings"
 )
 
 var sets = map[string][]string{
@@ -38,8 +39,17 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/generate", func(w http.ResponseWriter, r *http.Request) {
+		setsParam := r.URL.Query().Get("sets")
+		sets := []string{}
+
+		if setsParam != "" {
+			sets = strings.Split(setsParam, ",")
+			for i := range sets {
+				sets[i] = strings.TrimSpace(sets[i])
+			}
+		}
+
 		length := 12
-		sets := []string{"lowercase", "uppercase", "digits", "special"}
 		password := generate(length, sets)
 		fmt.Fprintf(w, "Generated password: %s", password)
 	})

@@ -2,7 +2,9 @@ package handler
 
 import (
 	"context"
+	"log"
 	"net/http"
+	"time"
 )
 
 type Router struct {
@@ -10,16 +12,25 @@ type Router struct {
 	server *http.Server
 }
 
+func loggerMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		start := time.Now()
+		log.Printf("%s %s from %s", r.Method, r.URL.Path, r.RemoteAddr)
+		next.ServeHTTP(w, r)
+		log.Printf("Completed in %v", time.Since(start))
+	})
+}
+
 func NewRouter() *Router {
 	mux := http.NewServeMux()
-	srv := &http.Server{
-		Addr:    ":80",
-		Handler: mux,
-	}
+	wrappedMux := loggerMiddleware(mux)
 
 	return &Router{
-		mux:    mux,
-		server: srv,
+		mux: mux,
+		server: &http.Server{
+			Addr:    ":80",
+			Handler: wrappedMux,
+		},
 	}
 }
 

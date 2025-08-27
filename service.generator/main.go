@@ -15,7 +15,7 @@ func main() {
 	router := handler.NewRouter()
 	router.SetupRoutes()
 
-	fmt.Println("Starting server on :8080")
+	fmt.Println("Starting server on :80")
 
 	go func() {
 		if err := router.Start(); err != nil && err.Error() != "http: Server closed" {

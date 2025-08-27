@@ -1,9 +1,25 @@
 name: password-generator
 services:
+  traefik:
+    image: traefik:v3.5
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.yml:/etc/traefik/traefik.yml
+
   generator:
     build: .
     ports:
-      - "8080:8080"
+      - "9000:80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.generator.rule=PathPrefix(`/service.generator/`)"
+      - "traefik.http.middlewares.generator-strip-prefix.stripprefix.prefixes=/service.generator"
+      - "traefik.http.routers.generator.middlewares=generator-strip-prefix"
+      - "traefik.http.routers.generator.entrypoints=web"
+
   web:
     build: ./web.client
     ports:

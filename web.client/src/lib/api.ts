@@ -9,7 +9,7 @@ function makeRequest(path: string, options: RequestInit = {}) {
 
 export async function generatePassword() {
   const response = await makeRequest(
-    "/generate?sets=lowercase,uppercase,digits,special"
+    "service.generator/generate?sets=lowercase,uppercase,digits,special"
   );
 
   if (!response.ok) {

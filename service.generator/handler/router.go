@@ -13,7 +13,7 @@ type Router struct {
 func NewRouter() *Router {
 	mux := http.NewServeMux()
 	srv := &http.Server{
-		Addr:    ":8080",
+		Addr:    ":80",
 		Handler: mux,
 	}
 

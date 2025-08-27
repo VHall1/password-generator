@@ -4,3 +4,7 @@ services:
     build: .
     ports:
       - "8080:8080"
+  web:
+    build: ./web.client
+    ports:
+      - "4173:4173"

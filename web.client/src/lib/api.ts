@@ -7,9 +7,20 @@ function makeRequest(path: string, options: RequestInit = {}) {
   return fetch(`${API_URL}${path}`, options);
 }
 
-export async function generatePassword() {
+export const AVAILABLE_SETS = ["lowercase", "uppercase", "digits", "special"];
+export type PasswordSet = (typeof AVAILABLE_SETS)[number];
+
+export async function generatePassword(
+  sets: PasswordSet[] = ["lowercase", "uppercase", "digits", "special"]
+) {
+  const query = new URLSearchParams();
+
+  if (sets.length > 0) {
+    query.append("sets", sets.join(","));
+  }
+
   const response = await makeRequest(
-    "service.generator/generate?sets=lowercase,uppercase,digits,special"
+    `service.generator/generate?${query.toString()}`
   );
 
   if (!response.ok) {

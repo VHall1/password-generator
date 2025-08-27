@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { startTransition, useActionState } from "react";
 import { generatePassword } from "./lib/api";
 
 export function App() {
-  const [password, setPassword] = useState("");
-
-  const handleGeneratePassword = async () => {
-    const password = await generatePassword();
-    setPassword(password);
-  };
+  const [password, handleGeneratePassword, isPending] = useActionState(
+    async () => {
+      const password = await generatePassword();
+      return password;
+    },
+    null
+  );
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
@@ -16,8 +17,9 @@ export function App() {
           Password Generator
         </h1>
         <button
-          onClick={handleGeneratePassword}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mb-6 transition-colors"
+          disabled={isPending}
+          onClick={() => startTransition(() => handleGeneratePassword())}
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mb-6 transition-colors disabled:bg-blue-300 disabled:cursor-not-allowed"
         >
           Generate Password
         </button>

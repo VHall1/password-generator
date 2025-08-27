@@ -1,21 +1,17 @@
 import { useState } from "react";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { generatePassword } from "./lib/api";
 
 export function App() {
   const [password, setPassword] = useState("");
 
-  const generatePassword = async () => {
-    const response = await fetch(
-      `${API_URL}/generate?sets=lowercase,uppercase,digits,special`
-    );
-    const data = await response.text();
-    setPassword(data);
+  const handleGeneratePassword = async () => {
+    const password = await generatePassword();
+    setPassword(password);
   };
 
   return (
     <>
-      <button onClick={generatePassword}>Random password</button>
+      <button onClick={handleGeneratePassword}>Random password</button>
       {password && <p>Your new password is: {password}</p>}
     </>
   );

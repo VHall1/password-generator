@@ -36,7 +36,7 @@ func NewRouter() *Router {
 
 func (r *Router) SetupRoutes() {
 	// define your routes here
-	r.mux.HandleFunc("/generate", GetGenerate)
+	r.mux.HandleFunc("GET /generate", GetGenerate)
 }
 
 func (r *Router) Start() error {

@@ -10,7 +10,9 @@ services:
       - ./traefik.yml:/etc/traefik/traefik.yml
 
   generator:
-    build: .
+    build:
+      context: .
+      dockerfile: service.generator/Dockerfile
     ports:
       - "9000:80"
     labels:
